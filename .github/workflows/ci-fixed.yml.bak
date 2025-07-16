@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline v2
 
 on:
   push:
@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        # Updated matrix without Python 3.1 - 2025-07-17
         python-version: [3.8, 3.9, 3.10, 3.11, 3.12]
 
     steps:
