@@ -21,16 +21,10 @@ class TestCLIBasic:
         assert result.exit_code == 0
         assert "Convert Excel files" in result.stdout
         # Check for both --sheet and --sheets parameters (handle ANSI codes)
-        help_output = (
-            result.stdout.replace("\x1b[", "")
-            .replace("\x1b[0m", "")
-            .replace("\x1b[1m", "")
-            .replace("\x1b[1;33m", "")
-            .replace("\x1b[1;32m", "")
-            .replace("\x1b[1;36m", "")
-            .replace("\x1b[2m", "")
-            .replace("\x1b[1;2;36m", "")
-        )
+        import re
+
+        # Remove all ANSI escape sequences
+        help_output = re.sub(r"\x1b\[[0-9;]*[a-zA-Z]", "", result.stdout)
         assert "--sheet" in help_output or "--sheets" in help_output
         assert "--output" in help_output
 
