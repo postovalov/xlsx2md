@@ -20,8 +20,19 @@ class TestCLIBasic:
         result = runner.invoke(app, ["--help"])
         assert result.exit_code == 0
         assert "Convert Excel files" in result.stdout
-        assert "--sheet" in result.stdout
-        assert "--output" in result.stdout
+        # Check for both --sheet and --sheets parameters (handle ANSI codes)
+        help_output = (
+            result.stdout.replace("\x1b[", "")
+            .replace("\x1b[0m", "")
+            .replace("\x1b[1m", "")
+            .replace("\x1b[1;33m", "")
+            .replace("\x1b[1;32m", "")
+            .replace("\x1b[1;36m", "")
+            .replace("\x1b[2m", "")
+            .replace("\x1b[1;2;36m", "")
+        )
+        assert "--sheet" in help_output or "--sheets" in help_output
+        assert "--output" in help_output
 
     def test_version(self):
         """Test version output."""
