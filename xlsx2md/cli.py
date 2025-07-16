@@ -4,7 +4,7 @@ CLI interface for xlsx2md.
 
 import sys
 from pathlib import Path
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Union
 import logging
 
 import typer
@@ -291,7 +291,7 @@ def process_single_sheet(
     """Process a single sheet."""
     try:
         # Parse sheet parameter
-        sheet_param = None
+        sheet_param: Optional[Union[str, int]] = None
         if sheet:
             try:
                 sheet_param = int(sheet)
@@ -306,7 +306,12 @@ def process_single_sheet(
             return
 
         # Render markdown
-        markdown = render_markdown_table(data, style, align, empty)
+        markdown = render_markdown_table(
+            data,
+            style=style,  # type: ignore
+            align=align,  # type: ignore
+            empty_cell=empty,
+        )
 
         # Output
         with get_output_stream(str(output) if output else None) as stream:
@@ -350,7 +355,12 @@ def process_all_sheets(
                 try:
                     data = read_file(file_path, i, range, max_rows=None)
                     if data:
-                        markdown = render_markdown_table(data, style, align, empty)
+                        markdown = render_markdown_table(
+                            data,
+                            style=style,  # type: ignore
+                            align=align,  # type: ignore
+                            empty_cell=empty,
+                        )
                         stream.write(markdown)
                     else:
                         stream.write("*No data in this sheet*\n")
@@ -381,7 +391,7 @@ def process_specific_sheets(
             return
 
         # Parse sheets parameter
-        sheet_list = []
+        sheet_list: List[Union[str, int]] = []
         for item in sheets.split(","):
             item = item.strip().strip("\"'")
             try:
@@ -413,7 +423,12 @@ def process_specific_sheets(
                 try:
                     data = read_file(file_path, sheet_param, range, max_rows=None)
                     if data:
-                        markdown = render_markdown_table(data, style, align, empty)
+                        markdown = render_markdown_table(
+                            data,
+                            style=style,  # type: ignore
+                            align=align,  # type: ignore
+                            empty_cell=empty,
+                        )
                         stream.write(markdown)
                     else:
                         stream.write("*No data in this sheet*\n")

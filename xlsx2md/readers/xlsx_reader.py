@@ -182,7 +182,7 @@ class XLSXReader(BaseReader):
         """
         try:
             workbook = openpyxl.load_workbook(file_path, read_only=True)
-            return workbook.sheetnames
+            return list(workbook.sheetnames)
         except Exception as e:
             logger.error(f"Error getting sheet names from {file_path}: {e}")
             return []

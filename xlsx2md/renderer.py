@@ -84,7 +84,14 @@ def render_markdown_table(
         raise ValueError(ERROR_MESSAGES["invalid_style"].format(style=style))
 
 
-def _render_default(header, rows, col_widths, align_row, align, empty_cell):
+def _render_default(
+    header: List[str],
+    rows: List[List[str]],
+    col_widths: List[int],
+    align_row: List[str],
+    align: List[Alignment],
+    empty_cell: str,
+) -> str:
     """
     Render table in default Markdown style with pipe separators.
 
@@ -130,7 +137,14 @@ def _render_default(header, rows, col_widths, align_row, align, empty_cell):
     return "\n".join(out)
 
 
-def _render_minimal(header, rows, col_widths, align_row, align, empty_cell):
+def _render_minimal(
+    header: List[str],
+    rows: List[List[str]],
+    col_widths: List[int],
+    align_row: List[str],
+    align: List[Alignment],
+    empty_cell: str,
+) -> str:
     """
     Render table in minimal style without borders.
 
@@ -166,7 +180,14 @@ def _render_minimal(header, rows, col_widths, align_row, align, empty_cell):
     return "\n".join(out)
 
 
-def _render_grid(header, rows, col_widths, align_row, align, empty_cell):
+def _render_grid(
+    header: List[str],
+    rows: List[List[str]],
+    col_widths: List[int],
+    align_row: List[str],
+    align: List[Alignment],
+    empty_cell: str,
+) -> str:
     """
     Render table in grid style with ASCII box drawing characters.
 
