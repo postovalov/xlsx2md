@@ -152,7 +152,9 @@ def _render_minimal(header, rows, col_widths, align_row, align, empty_cell):
             for cell, w, a in zip(header, col_widths, align)
         )
     ]
-    # Alignment (skip)
+    # Separator line
+    separator = " ".join("-" * w for w in col_widths)
+    out.append(separator)
     # Rows
     for row in rows:
         out.append(

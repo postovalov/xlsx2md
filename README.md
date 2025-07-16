@@ -73,10 +73,10 @@ xlsx2md data.xlsx --style grid
 ## 📁 Supported Formats
 
 | Format        | Extension | Description                |
-|--------------|-----------|----------------------------|
-| Excel 2007+  | `.xlsx`   | Modern Excel format        |
-| Excel 97-2003| `.xls`    | Legacy Excel format        |
-| CSV          | `.csv`    | Text format with delimiter |
+|---------------|-----------|----------------------------|
+| Excel 2007+   | `.xlsx`   | Modern Excel format        |
+| Excel 97-2003 | `.xls`    | Legacy Excel format        |
+| CSV           | `.csv`    | Text format with delimiter |
 
 ## 📖 Usage
 
@@ -119,10 +119,10 @@ xlsx2md sales_data.xlsx
 
 **Result:**
 ```markdown
-| Product | Q1 | Q2 | Q3 | Q4 |
-|---------|----|----|----|----|
+|  Product |  Q1 |  Q2 |  Q3 |  Q4 |
+|----------|-----|-----|-----|-----|
 | Widget A | 100 | 120 | 110 | 130 |
-| Widget B | 80 | 90 | 85 | 95 |
+| Widget B |  80 |  90 |  85 |  95 |
 | Widget C | 150 | 160 | 155 | 165 |
 ```
 
@@ -140,10 +140,10 @@ xlsx2md data.xlsx --style minimal
 
 **Result:**
 ```markdown
-Product | Q1 | Q2 | Q3 | Q4
---------|----|----|----|----
+Product  |  Q1 |  Q2 |  Q3 |  Q4
+---------|-----|-----|-----|-----
 Widget A | 100 | 120 | 110 | 130
-Widget B | 80 | 90 | 85 | 95
+Widget B |  80 |  90 |  85 |  95
 ```
 
 #### Grid style
@@ -197,15 +197,15 @@ xlsx2md data.xlsx --info
 
 ### Environment variables
 
-| Variable              | Description                        | Default   |
-|----------------------|------------------------------------|-----------|
-| `XLSX2MD_ENCODING`   | Encoding for CSV files             | `utf-8`   |
-| `XLSX2MD_MAX_FILE_SIZE` | Max file size (MB)               | `100`     |
-| `XLSX2MD_MAX_ROWS`   | Max number of rows                 | `10000`   |
-| `XLSX2MD_OUTPUT_FORMAT` | Output format                    | `markdown`|
-| `XLSX2MD_COLORS`     | Enable colored output              | `true`    |
-| `XLSX2MD_VERBOSE`    | Verbose output                     | `false`   |
-| `XLSX2MD_LOG_LEVEL`  | Logging level                      | `WARNING` |
+| Variable                | Description                        | Default     |
+|-------------------------|------------------------------------|-------------|
+| `XLSX2MD_ENCODING`      | Encoding for CSV files             | `utf-8`     |
+| `XLSX2MD_MAX_FILE_SIZE` | Max file size (MB)                 | `100`       |
+| `XLSX2MD_MAX_ROWS`      | Max number of rows                 | `10000`     |
+| `XLSX2MD_OUTPUT_FORMAT` | Output format                      | `markdown`  |
+| `XLSX2MD_COLORS`        | Enable colored output              | `true`      |
+| `XLSX2MD_VERBOSE`       | Verbose output                     | `false`     |
+| `XLSX2MD_LOG_LEVEL`     | Logging level                      | `WARNING`   |
 
 ### Example usage
 ```bash
