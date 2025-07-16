@@ -1,0 +1,11 @@
+ProductID,Name,Category,Price,Stock,Description,Tags
+P001,Laptop Pro,Electronics,1299.99,45,High-performance laptop for professionals,"laptop,computer,professional"
+P002,Wireless Mouse,Electronics,29.99,120,Ergonomic wireless mouse with precision tracking,"mouse,wireless,ergonomic"
+P003,Office Chair,Furniture,199.99,23,Comfortable office chair with lumbar support,"chair,office,comfortable"
+P004,Coffee Maker,Appliances,89.99,67,Programmable coffee maker with thermal carafe,"coffee,appliance,programmable"
+P005,Desk Lamp,Furniture,49.99,89,LED desk lamp with adjustable brightness,"lamp,LED,adjustable"
+P006,Bluetooth Headphones,Electronics,79.99,156,Noise-cancelling wireless headphones,"headphones,bluetooth,noise-cancelling"
+P007,Standing Desk,Furniture,299.99,12,Electric standing desk with memory settings,"desk,standing,electric"
+P008,Smart Watch,Electronics,249.99,78,Fitness tracking smartwatch with heart rate monitor,"watch,smart,fitness"
+P009,Plant Pot,Home & Garden,19.99,234,Ceramic plant pot with drainage hole,"pot,ceramic,plant"
+P010,USB Cable,Electronics,9.99,500,High-speed USB-C cable with braided design,"cable,USB-C,braided"
