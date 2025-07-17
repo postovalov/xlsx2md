@@ -326,3 +326,273 @@ def test_empty_cells_consistency():
             assert (
                 empty_value in md
             ), f"Value empty_cell='{empty_value}' not found in output"
+
+
+def test_default_style_complete_verification():
+    """Complete verification of default style rendering."""
+    data = [
+        ["Product", "Price", "Stock", "Category"],
+        ["Laptop", "$999", "15", "Electronics"],
+        ["Mouse", "$25", "100", "Accessories"],
+        ["Keyboard", "$75", "50", "Accessories"],
+    ]
+
+    md = render_markdown_table(data, style="default")
+    lines = md.strip().split("\n")
+
+    # Verify structure
+    assert len(lines) == 5  # header + separator + 3 data rows
+
+    # Verify header line
+    header = lines[0]
+    assert header.startswith("|") and header.endswith("|")
+    assert "Product" in header
+    assert "Price" in header
+    assert "Stock" in header
+    assert "Category" in header
+
+    # Verify separator line
+    separator = lines[1]
+    assert separator.startswith("|") and separator.endswith("|")
+    assert "---" in separator
+
+    # Verify data lines
+    for i in range(2, 5):
+        data_line = lines[i]
+        assert data_line.startswith("|") and data_line.endswith("|")
+        assert data_line.count("|") == 5  # 4 columns + 2 borders
+
+    # Verify content
+    assert "Laptop" in md
+    assert "$999" in md
+    assert "15" in md
+    assert "Electronics" in md
+
+
+def test_minimal_style_complete_verification():
+    """Complete verification of minimal style rendering."""
+    data = [
+        ["Name", "Age", "City"],
+        ["Alice", "30", "New York"],
+        ["Bob", "25", "Los Angeles"],
+        ["Charlie", "35", "Chicago"],
+    ]
+
+    md = render_markdown_table(data, style="minimal")
+    lines = md.strip().split("\n")
+
+    # Verify structure
+    assert len(lines) == 5  # header + separator + 3 data rows
+
+    # Verify no pipe symbols
+    for line in lines:
+        assert "|" not in line, f"Found pipe symbol in minimal style: {line}"
+
+    # Verify header line
+    header = lines[0]
+    assert "Name" in header
+    assert "Age" in header
+    assert "City" in header
+
+    # Verify separator line
+    separator = lines[1]
+    assert "-" in separator
+    assert separator.count("-") >= 3  # At least 3 dashes
+
+    # Verify data lines
+    for i in range(2, 5):
+        data_line = lines[i]
+        assert "Alice" in data_line or "Bob" in data_line or "Charlie" in data_line
+
+    # Verify content
+    assert "Alice" in md
+    assert "30" in md
+    assert "New York" in md
+
+
+def test_grid_style_complete_verification():
+    """Complete verification of grid style rendering."""
+    data = [
+        ["ID", "Name", "Status"],
+        ["1", "Alice", "Active"],
+        ["2", "Bob", "Inactive"],
+        ["3", "Charlie", "Active"],
+    ]
+
+    md = render_markdown_table(data, style="grid")
+    lines = md.strip().split("\n")
+
+    # Verify structure - grid style has borders between each row
+    assert (
+        len(lines) == 9
+    )  # top border + header + separator + 3 data rows + 3 row borders
+
+    # Verify top border
+    top_border = lines[0]
+    assert top_border.startswith("+") and top_border.endswith("+")
+    assert top_border.count("+") >= 4  # At least 4 corners
+
+    # Verify header line
+    header = lines[1]
+    assert header.startswith("|") and header.endswith("|")
+    assert "ID" in header
+    assert "Name" in header
+    assert "Status" in header
+
+    # Verify separator line
+    separator = lines[2]
+    assert separator.startswith("+") and separator.endswith("+")
+    assert "=" in separator
+
+    # Verify data lines with borders
+    data_line_indices = [3, 5, 7]  # Data lines are at indices 3, 5, 7
+    for i in data_line_indices:
+        data_line = lines[i]
+        assert data_line.startswith("|") and data_line.endswith("|")
+        assert data_line.count("|") == 4  # 3 columns + 2 borders
+
+    # Verify row borders
+    border_indices = [0, 2, 4, 6, 8]  # Border lines
+    for i in border_indices:
+        border_line = lines[i]
+        assert border_line.startswith("+") and border_line.endswith("+")
+        assert border_line.count("+") >= 4
+
+    # Verify content
+    assert "1" in md
+    assert "Alice" in md
+    assert "Active" in md
+
+
+def test_style_consistency_across_data_sizes():
+    """Verify that all styles work consistently with different data sizes."""
+    test_cases = [
+        # Small table
+        [["A", "B"], ["1", "2"]],
+        # Medium table
+        [["Name", "Age", "City"], ["Alice", "30", "NY"], ["Bob", "25", "LA"]],
+        # Large table
+        [
+            ["ID", "Name", "Email", "Phone", "Status"],
+            ["1", "Alice", "alice@test.com", "555-1234", "Active"],
+            ["2", "Bob", "bob@test.com", "555-5678", "Inactive"],
+            ["3", "Charlie", "charlie@test.com", "555-9012", "Active"],
+            ["4", "Diana", "diana@test.com", "555-3456", "Active"],
+        ],
+    ]
+
+    for data in test_cases:
+        for style in ["default", "minimal", "grid"]:
+            md = render_markdown_table(data, style=style)
+            lines = md.strip().split("\n")
+
+            # Verify basic structure
+            assert len(lines) >= 3  # At least header + separator + 1 data row
+
+            # Verify content is present
+            for row in data:
+                for cell in row:
+                    if cell:  # Skip empty cells
+                        assert cell in md, f"Cell '{cell}' not found in {style} style"
+
+                        # Verify style-specific characteristics
+                if style == "default":
+                    assert "|" in lines[0]  # Header has pipes
+                    # Separator might have different alignment markers
+                    separator_line = lines[1]
+                    assert (
+                        "---" in separator_line
+                        or ":---" in separator_line
+                        or "---:" in separator_line
+                        or ":---:" in separator_line
+                        or "..." in separator_line
+                    )
+                elif style == "minimal":
+                    assert "|" not in md  # No pipes anywhere
+                    assert "-" in lines[1]  # Separator has dashes
+                elif style == "grid":
+                    assert lines[0].startswith("+") and lines[0].endswith(
+                        "+"
+                    )  # Top border
+                    assert lines[-1].startswith("+") and lines[-1].endswith(
+                        "+"
+                    )  # Bottom border
+
+
+def test_style_edge_cases():
+    """Test edge cases for all table styles."""
+    edge_cases = [
+        # Single cell
+        [["Single"]],
+        # Single row
+        [["A", "B", "C"]],
+        # Single column
+        [["Header"], ["Data1"], ["Data2"]],
+        # Empty cells
+        [["A", "", "C"], ["", "B", ""], ["D", "E", ""]],
+        # Long content
+        [["Short", "Very long content that might cause issues", "Normal"]],
+        # Special characters
+        [["Normal", "Text with | pipes", "Text with * asterisks"]],
+    ]
+
+    for data in edge_cases:
+        for style in ["default", "minimal", "grid"]:
+            try:
+                md = render_markdown_table(data, style=style)
+                lines = md.strip().split("\n")
+
+                # Verify no crashes and basic structure
+                assert len(lines) >= 2  # At least header + separator
+                assert md != ""  # Not empty output
+
+                # Verify style-specific requirements
+                if style == "default":
+                    assert "|" in lines[0]
+                elif style == "minimal":
+                    # Check that no line starts or ends with | (table structure)
+                    for line in lines:
+                        assert not line.strip().startswith(
+                            "|"
+                        ), f"Line starts with | in minimal style: {line}"
+                        assert not line.strip().endswith(
+                            "|"
+                        ), f"Line ends with | in minimal style: {line}"
+                elif style == "grid":
+                    assert lines[0].startswith("+") and lines[0].endswith("+")
+
+            except Exception as e:
+                pytest.fail(f"Style {style} failed with data {data}: {e}")
+
+
+def test_style_performance_with_large_data():
+    """Test that all styles handle large datasets efficiently."""
+    # Create large dataset
+    large_data = [["ID", "Name", "Value", "Category"]]
+    for i in range(100):  # 100 rows
+        large_data.append([str(i), f"Item{i}", str(i * 10), f"Cat{i % 5}"])
+
+    for style in ["default", "minimal", "grid"]:
+        md = render_markdown_table(large_data, style=style)
+        lines = md.strip().split("\n")
+
+        # Verify all data is included
+        if style == "grid":
+            assert len(lines) == 203  # header + separator + 100 data rows + 101 borders
+        else:
+            assert len(lines) == 102  # header + separator + 100 data rows
+
+        # Verify content is present
+        assert "Item0" in md
+        assert "Item99" in md
+        assert "Cat0" in md
+        assert "Cat4" in md
+
+        # Verify style characteristics
+        if style == "default":
+            assert "|" in lines[0]
+        elif style == "minimal":
+            assert "|" not in md
+        elif style == "grid":
+            assert lines[0].startswith("+") and lines[0].endswith("+")
+            assert lines[-1].startswith("+") and lines[-1].endswith("+")
