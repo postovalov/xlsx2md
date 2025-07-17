@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PyPI version](https://badge.fury.io/py/xlsx2md.svg)](https://badge.fury.io/py/xlsx2md)
 [![CI/CD Pipeline](https://github.com/postovalov/xlsx2md/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/postovalov/xlsx2md/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/coverage-80%25+-green.svg)](https://codecov.io/gh/postovalov/xlsx2md)
+[![codecov](https://codecov.io/gh/postovalov/xlsx2md/branch/main/graph/badge.svg)](https://codecov.io/gh/postovalov/xlsx2md)
 [![Code Quality](https://img.shields.io/badge/code%20quality-A-brightgreen.svg)](https://github.com/postovalov/xlsx2md)
 [![Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![MyPy](https://img.shields.io/badge/mypy-checked-blue.svg)](http://mypy-lang.org/)
