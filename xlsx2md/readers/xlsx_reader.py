@@ -52,7 +52,16 @@ class XLSXReader(BaseReader):
             # Get sheet
             if sheet_name_or_index is None:
                 sheet = workbook.active
-                logger.info(f"Using active sheet: {sheet.title}")
+                # Handle case when active sheet is None (corrupted file)
+                if sheet is None:
+                    if not workbook.sheetnames:
+                        raise ValueError(
+                            "File appears to be corrupted or empty - "
+                            "no sheets found in workbook"
+                        )
+                    sheet = workbook.worksheets[0]
+                    logger.warning("Active sheet is None, using first available sheet")
+                logger.info(f"Using sheet: {sheet.title}")
             else:
                 sheet = find_sheet_by_name_or_index(workbook, sheet_name_or_index)
                 logger.info(f"Using sheet: {sheet.title}")
@@ -205,6 +214,11 @@ class XLSXReader(BaseReader):
 
             if sheet_name_or_index is None:
                 sheet = workbook.active
+                # Handle case when active sheet is None (corrupted file)
+                if sheet is None:
+                    if not workbook.sheetnames:
+                        return {}
+                    sheet = workbook.worksheets[0]
             else:
                 sheet = find_sheet_by_name_or_index(workbook, sheet_name_or_index)
 
